@@ -1,2 +1,6 @@
 
 test/
+models/ 
+datasets/
+feature_names/
+notebooks/

@@ -1,0 +1,66 @@
+* {
+  text-align: center;
+}
+
+.css-183lzff.eyqtai90 {
+  text-align: left;
+}
+
+.css-5uatcg.edgvbvh10 {
+  height: 100px;
+  width: 200px;
+}
+
+.link1:link {
+  color: white;
+  text-decoration: none;
+}
+
+.link1:visited {
+  color: white;
+}
+
+.link1:hover {
+  color: white;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.link1:active {
+  color: white;
+}
+
+.button1 {
+  height: 100px;
+  width: 200px;
+  display: inline-flex;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  /* font-weight: 400;
+  padding: 0.25rem 0.75rem; */
+  border-radius: 0.25rem;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  line-height: 1.6;
+  color: inherit;
+  /* width: auto; */
+  user-select: none;
+  background-color: rgb(19, 23, 32);
+  border: 1px solid rgba(250, 250, 250, 0.2);
+}
+
+.dataset1-main-header {
+  font-style: italic;
+  text-align: center;
+  margin: 0;
+  margin-bottom: 5px;
+}
+
+.dataset1-secondary-header {
+  font-style: italic;
+  text-align: center;
+  margin: 0;
+  margin-bottom: 10px;
+}
