@@ -3,4 +3,5 @@ test/
 models/ 
 datasets/
 feature_names/
-notebooks/
+English-Dict-Ft/
+Keras-Layers/
