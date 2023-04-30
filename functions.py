@@ -1,4 +1,5 @@
 import pandas as pd
+import streamlit as st
 import re
 import pickle
 import numpy as np
@@ -8,6 +9,35 @@ import fasttext
 import tensorflow_hub as hub
 import tensorflow_text
 from sklearn.feature_extraction.text import TfidfVectorizer
+
+metrics = {
+    "dataset1": {
+        "xgb_model_1": "Confusion matrix:\n[95 18]\n[30 54]\n\nAccuracy: 75.63%\nPrecision: 75.00%\nRecall: 64.29%\nF1 Score: 69.23%",
+        "svm_model_1": "Confusion matrix:\n[101  12]\n[24   60]\n\nAccuracy: 81.73%\nPrecision: 83.33%\nRecall: 71.43%\nF1 Score: 76.92%",
+        "xgb_model_2": "Confusion matrix:\n[95 18]\n[39 45]\n\nAccuracy: 71.07%\nPrecision: 71.43%\nRecall: 53.57%\nF1 Score: 61.22%",
+        "svm_model_2": "Confusion matrix:\n[92 21]\n[36 48]\n\nAccuracy: 71.07%\nPrecision: 69.57%\nRecall: 57.14%\nF1 Score: 62.75%",
+        "xgb_model_3": "Confusion matrix:\n[93 20]\n[29 55]\n\nAccuracy: 75.13%\nPrecision: 73.33%\nRecall: 65.48%\nF1 Score: 69.18%",
+        "svm_model_3": "Confusion matrix:\n[101  12]\n[21   63]\n\nAccuracy: 83.25%\nPrecision: 84.00%\nRecall: 75.00%\nF1 Score: 79.25%",
+        "xgb_model_4": "Confusion matrix:\n[94 19]\n[24 60]\n\nAccuracy: 78.17%\nPrecision: 75.95%\nRecall: 71.43%\nF1 Score: 73.62%",
+        "svm_model_4": "Confusion matrix:\n[91 22]\n[20 64]\n\nAccuracy: 78.68%\nPrecision: 74.42%\nRecall: 76.19%\nF1 Score: 75.29%",
+        "xgb_model_5": "Confusion matrix:\n[78 35]\n[39 45]\n\nAccuracy: 62.44%\nPrecision: 56.25%\nRecall: 53.57%\nF1 Score: 54.88%",
+        "svm_model_5": "Confusion matrix:\n[101  12]\n[71 13]\n\nAccuracy: 57.87%\nPrecision: 52.00%\nRecall: 15.48%\nF1 Score: 23.85%",
+        "bert_classifier": "Loss: 66.99%\nAccuracy: 58.88%\n\nPrecision: 55.17%\nRecall: 19.05%",
+    },
+    "dataset2": {
+        "xgb_model_1": "Confusion matrix:\n[253   0]\n[  1 258]\n\nAccuracy: 99.80%\nPrecision: 100.00%\nRecall: 99.61%\nF1 Score: 99.81%",
+        "svm_model_1": "Confusion matrix:\n[250   3]\n[  2 257]\n\nAccuracy: 99.02%\nPrecision: 98.85%\nRecall: 99.23%\nF1 Score: 99.04%",
+        "xgb_model_2": "Confusion matrix:\n[232   21]\n[  52 207]\n\nAccuracy: 85.74%\nPrecision: 90.79%\nRecall: 79.92%\nF1 Score: 85.01%",
+        "svm_model_2": "Confusion matrix:\n[232  21]\n[ 51 208]\n\nAccuracy: 85.94%\nPrecision: 90.83%\nRecall: 80.31%\nF1 Score: 85.25%",
+        "xgb_model_3": "Confusion matrix:\n[253   0]\n[  1 258]\n\nAccuracy: 99.80%\nPrecision: 100.00%\nRecall: 99.61%\nF1 Score: 99.81%",
+        "svm_model_3": "Confusion matrix:\n[251   2]\n[  4 255]\n\nAccuracy: 98.83%\nPrecision: 99.22%\nRecall: 98.46%\nF1 Score: 98.84%",
+        "xgb_model_4": "Confusion matrix:\n[241  12]\n[  5 254]\n\nAccuracy: 96.68%\nPrecision: 95.49%\nRecall: 98.07%\nF1 Score: 96.76%",
+        "svm_model_4": "Confusion matrix:\n[246   7]\n[  6 253]\n\nAccuracy: 97.46%\nPrecision: 97.31%\nRecall: 97.68%\nF1 Score: 97.50%",
+        "xgb_model_5": "Confusion matrix:\n[228  25]\n[ 17 242]\n\nAccuracy: 91.80%\nPrecision: 90.64%\nRecall: 93.44%\nF1 Score: 92.02%",
+        "svm_model_5": "Confusion matrix:\n[216  37]\n[ 19 240]\n\nAccuracy: 89.06%\nPrecision: 86.64%\nRecall: 92.66%\nF1 Score: 89.55%",
+        "bert_classifier": "Loss: 29.73%\nAccuracy: 88.67%\nPrecision: 87.08%\nRecall: 91.12%",
+    },
+}
 
 
 # Cleans a given string by removing URLs, HTML elements, punctuations, stop words, and extra white spaces.
@@ -41,7 +71,7 @@ def avg_words(dataset):
     words_in_total = 0
     texts = 0
     for text in dataset.iterrows():
-        for word in text[1][1].split(" "):
+        for word in text[1][0].split(" "):
             words_in_total += 1
         texts += 1
     return round(words_in_total / texts, 2)
@@ -52,7 +82,7 @@ def avg_chars(dataset):
     chars_in_total = 0
     texts = 0
     for text in dataset.iterrows():
-        for word in text[1][1]:
+        for word in text[1][0]:
             chars_in_total += 1
         texts += 1
     return round(chars_in_total / texts, 2)
@@ -126,14 +156,26 @@ def read_dataset2():
 def load_model(id, name):
     if id == 1:
         if name == "bert_classifier":
-            return tf.keras.models.load_model(f"models/tomer_and_eli/{name}")
+            return (
+                tf.keras.models.load_model(f"models/tomer_and_eli/{name}"),
+                metrics[f"dataset{id}"][name],
+            )
         else:
-            return pickle.load(open(f"models/tomer_and_eli/{name}", "rb"))
+            return (
+                pickle.load(open(f"models/tomer_and_eli/{name}", "rb")),
+                metrics[f"dataset{id}"][name.split(".")[0]],
+            )
     if id == 2:
         if name == "bert_classifier":
-            return tf.keras.models.load_model(f"models/jenny/{name}")
+            return (
+                tf.keras.models.load_model(f"models/jenny/{name}"),
+                metrics[f"dataset{id}"][name],
+            )
         else:
-            return pickle.load(open(f"models/jenny/{name}", "rb"))
+            return (
+                pickle.load(open(f"models/jenny/{name}", "rb")),
+                metrics[f"dataset{id}"][name.split(".")[0]],
+            )
 
 
 def load_feature_names(id, option=False):
@@ -189,13 +231,11 @@ def preprocess_text_for_predict(text_to_process, feature_names):
     return text
 
 
-# Only once
 def init_ft():
     model_en = fasttext.load_model("English-Dict-Ft/cc.en.300.bin")
     return model_en
 
 
-# Only once
 def init_BERT():
     # Keras layers
     bert_preprocess = hub.KerasLayer(

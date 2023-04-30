@@ -4,6 +4,7 @@ header = st.container()
 approach = st.container()
 goal = st.container()
 datasets = st.container()
+contributions = st.container()
 
 with open("style.css") as f:
     st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
@@ -45,35 +46,17 @@ with datasets:
             '<div class="button1"><a href="/Dataset_2" class="link1" target="_self">Jenny Guber</a></div>',
             unsafe_allow_html=True,
         )
-    st.markdown("<p>⬆️</p>", unsafe_allow_html=True)
+    st.markdown('<p class="arrow">⬆️</p>', unsafe_allow_html=True)
     st.text(
         "You have two datasets to choose from, and we have trained six different models for\neach. Select one dataset and explore the models that have been trained on it."
     )
 
-
-# header = st.container()
-# dataset = st.container()t
-# approach = st.container()
-# goal = st.container()
-# classifier = st.container()
-
-
-# with dataset:
-# 	st.header("Dataset")
-# 	st.text("We collected and annotated a new dataset of issues reported in GitHub projects.")
-# 	# Import data
-# 	dataset = dt.read_dataset()
-# 	st.write(dataset.head())
-
-# with classifier:
-# 	st.header("Try PVC")
-# 	st.text("* Please enter text that describes for you a type of privacy violation\n  in software.")
-# 	text = st.text_input("", placeholder="Write some text...")
-# 	model = pvc.load_model("/Users/tomerbenshimol/Desktop/Software_Engineering_Project/models/jenny/xgb_model_1.pickle")
-# 	feature_names = pvc.load_feature_names("/Users/tomerbenshimol/Desktop/Software_Engineering_Project/feature_names/feature_names_Jenny.npy")
-# 	if text != '':
-# 		result = pvc.new_prediction(model, text, feature_names)
-# 		if result == 1:
-# 			st.write('Privacy Violation! ⛔️')
-# 		if result == 0:
-# 			st.write('Not a Privacy Violation 🙏🏻')
+with contributions:
+    st.header("Contributions")
+    st.text(
+        "Would you like to contribute to our project by uploading your own datasets\nof privacy-related issues and their classifications?"
+    )
+    st.markdown(
+        '<div class="button2"><a href="/Contributions" class="link1" target="_self">Upload your own dataset</a></div>',
+        unsafe_allow_html=True,
+    )

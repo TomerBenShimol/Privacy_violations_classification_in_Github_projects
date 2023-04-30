@@ -28,7 +28,9 @@ with dataset_section:
     st.text(f"{dataset.shape[0]} Annotations.")
     st.text(f"{dataset.Classification.value_counts()[0]} Non-privacy violations.")
     st.text(f"{dataset.Classification.value_counts()[1]} Privacy violations.")
-    st.text("* After performing data augmentation - with the help of chatGPT.")
+    st.text(f"Average words: {avg_words(dataset)}")
+    st.text(f"Average characters: {avg_chars(dataset)}")
+    st.text("Partition - 80% of training data & 20% of testing data.")
     st.text(
         "With the help of YAKE! we extracted keywords from the texts that were labeled as 1."
     )
@@ -52,9 +54,6 @@ with model:
         index2 = options2.index(option2)
     else:
         index2 = None
-    st.text(
-        "* Please enter text that describes for you a type of privacy violation\n  in software."
-    )
     text = text_input_container.text_input(
         "", placeholder="Write some text to classify..."
     )
@@ -64,7 +63,11 @@ with model:
     model_name = f"{model_name}_model_{index1 + 1}.pickle"
     if index1 == 5:
         model_name = "bert_classifier"
-    model = load_model(2, model_name)
+    model, metrics = load_model(2, model_name)
+    st.text("")
+    st.text(metrics)
+    st.text("")
+    st.text("* Please enter a description (text) of privacy violation.")
     #  feature_names = load_feature_names(1)
     result = -1
     if text:
