@@ -73,9 +73,10 @@ with model:
     if text:
         text_input_container.write("")
         result = new_prediction(model, index1, 1, text)
+        text = ""
         if result == 1:
             text_input_container.write("Privacy Violation! ⛔️")
-            time.sleep(3)
+            time.sleep(5)
             if "pv" in st.session_state:
                 st.session_state["pv"] = ""
             text = text_input_container.text_input(
@@ -83,7 +84,7 @@ with model:
             )
         if result == 0:
             text_input_container.write("Not a Privacy Violation 🙏🏻")
-            time.sleep(3)
+            time.sleep(5)
             if "!pv" in st.session_state:
                 st.session_state["!pv"] = ""
             text = text_input_container.text_input(
