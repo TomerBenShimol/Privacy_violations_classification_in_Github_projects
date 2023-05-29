@@ -74,7 +74,10 @@ def avg_words(dataset):
         for word in text[1][0].split(" "):
             words_in_total += 1
         texts += 1
-    return round(words_in_total / texts, 2)
+    try:
+        return round(words_in_total / texts, 2)
+    except ZeroDivisionError:
+        return 0.0
 
 
 # Calculates and returns the average number of characters per text in a given dataset.
@@ -82,10 +85,14 @@ def avg_chars(dataset):
     chars_in_total = 0
     texts = 0
     for text in dataset.iterrows():
-        for word in text[1][0]:
-            chars_in_total += 1
+        for word in text[1][0].split(" "):
+            for char in word:
+                chars_in_total += 1
         texts += 1
-    return round(chars_in_total / texts, 2)
+    try:
+        return round(chars_in_total / texts, 2)
+    except ZeroDivisionError:
+        return 0.0
 
 
 def read_dataset1():
@@ -154,31 +161,38 @@ def read_dataset2():
 
 
 def load_model(id, name):
-    if id == 1:
-        if name == "bert_classifier":
-            return (
-                tf.keras.models.load_model(f"models/tomer_and_eli/{name}"),
-                metrics[f"dataset{id}"][name],
-            )
-        else:
-            return (
-                pickle.load(open(f"models/tomer_and_eli/{name}", "rb")),
-                metrics[f"dataset{id}"][name.split(".")[0]],
-            )
-    if id == 2:
-        if name == "bert_classifier":
-            return (
-                tf.keras.models.load_model(f"models/jenny/{name}"),
-                metrics[f"dataset{id}"][name],
-            )
-        else:
-            return (
-                pickle.load(open(f"models/jenny/{name}", "rb")),
-                metrics[f"dataset{id}"][name.split(".")[0]],
-            )
+    if id not in [1, 2]:
+        return None, None
+    try:
+        if id == 1:
+            if name == "bert_classifier":
+                return (
+                    tf.keras.models.load_model(f"models/tomer_and_eli/{name}"),
+                    metrics[f"dataset{id}"][name],
+                )
+            else:
+                return (
+                    pickle.load(open(f"models/tomer_and_eli/{name}", "rb")),
+                    metrics[f"dataset{id}"][name.split(".")[0]],
+                )
+        if id == 2:
+            if name == "bert_classifier":
+                return (
+                    tf.keras.models.load_model(f"models/jenny/{name}"),
+                    metrics[f"dataset{id}"][name],
+                )
+            else:
+                return (
+                    pickle.load(open(f"models/jenny/{name}", "rb")),
+                    metrics[f"dataset{id}"][name.split(".")[0]],
+                )
+    except:
+        return None, None
 
 
 def load_feature_names(id, option=False):
+    if id not in [1, 2] or type(option) != bool:
+        return None
     if id == 1 and not option:
         return np.load(
             f"feature_names/tomer_and_eli/feature_names.npy", allow_pickle=True
@@ -196,6 +210,8 @@ def load_feature_names(id, option=False):
 def to_tfidf(text_to_process, feature_names):
     if type(text_to_process) is str:
         text_to_process = pd.Series(text_to_process)
+    if type(text_to_process) != pd.Series:
+        return None
     # Create an array of zeros
     data = np.zeros((1, len(feature_names)))
     text = pd.DataFrame(data, index=[text_to_process], columns=feature_names)
@@ -215,6 +231,8 @@ def to_tfidf(text_to_process, feature_names):
 
 # Prepering the text for model prediction (TF-IDF based models)
 def preprocess_text_for_predict(text_to_process, feature_names):
+    if type(text_to_process) != pd.Series and type(text_to_process) != str:
+        return None
     new_tfidf, text = to_tfidf(text_to_process, feature_names)
     weights = []
     # Saving tfidf original values
@@ -248,6 +266,8 @@ def init_BERT():
 
 
 def get_text_embedding(text):
+    if type(text) != pd.Series and type(text) != str:
+        return None
     bert_preprocess, bert_encoder = init_BERT()
     preprocessed_text = bert_preprocess(text)
     return bert_encoder(preprocessed_text)["pooled_output"]
@@ -285,6 +305,8 @@ def new_prediction(model, num, dataset, text_to_predict):
         feature_names = load_feature_names(1)
     if dataset == 2:
         feature_names = load_feature_names(2)
+    if dataset != 1 and dataset != 2:
+        return None
 
     if num in options:
         if num == 1:
@@ -308,5 +330,8 @@ def new_prediction(model, num, dataset, text_to_predict):
             return 1
         else:
             return 0
+
+    if num > 5 or num < 0:
+        return None
 
     return model.predict(pred)[0]

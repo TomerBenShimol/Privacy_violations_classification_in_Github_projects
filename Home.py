@@ -37,13 +37,13 @@ with datasets:
 
     with col1:
         st.markdown(
-            '<div class="button1"><a href="/Dataset_1" class="link1" target="_self">Tomer & Eli</a></div>',
+            '<div class="button1"><a href="/Dataset_SCE" class="link1" target="_self">SCE</a></div>',
             unsafe_allow_html=True,
         )
 
     with col2:
         st.markdown(
-            '<div class="button1"><a href="/Dataset_2" class="link1" target="_self">Jenny Guber</a></div>',
+            '<div class="button1"><a href="/Dataset_Hifa" class="link1" target="_self">Haifa</a></div>',
             unsafe_allow_html=True,
         )
     st.markdown('<p class="arrow">⬆️</p>', unsafe_allow_html=True)
