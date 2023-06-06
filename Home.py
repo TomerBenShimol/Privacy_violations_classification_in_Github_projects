@@ -5,21 +5,6 @@ from pymongo.server_api import ServerApi
 import functions
 import gridfs
 
-
-# # Initialize connection.
-# # Uses st.cache_resource to only run once.
-# @st.cache_resource
-# def init_connection():
-#     return pymongo.MongoClient(
-#         "mongodb+srv://tomerbe3:R584tcs8L3NPZlj9@cluster0.taqvwiw.mongodb.net/?retryWrites=true&w=majority",
-#         server_api=ServerApi("1"),
-#     )
-#     # return pymongo.MongoClient(**st.secrets["mongo"])
-
-
-# client = init_connection()
-
-
 # # Pull data from the collection.
 # # Uses st.cache_data to only rerun when the query changes or after 10 min.
 # @st.cache_data(ttl=600)
