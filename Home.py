@@ -1,4 +1,56 @@
+import pickle
 import streamlit as st
+import pymongo
+from pymongo.server_api import ServerApi
+import functions
+import gridfs
+
+
+# # Initialize connection.
+# # Uses st.cache_resource to only run once.
+# @st.cache_resource
+# def init_connection():
+#     return pymongo.MongoClient(
+#         "mongodb+srv://tomerbe3:R584tcs8L3NPZlj9@cluster0.taqvwiw.mongodb.net/?retryWrites=true&w=majority",
+#         server_api=ServerApi("1"),
+#     )
+#     # return pymongo.MongoClient(**st.secrets["mongo"])
+
+
+# client = init_connection()
+
+
+# # Pull data from the collection.
+# # Uses st.cache_data to only rerun when the query changes or after 10 min.
+# @st.cache_data(ttl=600)
+# def set_data():
+#     db = client.PVC
+#     fs = gridfs.GridFS(db)
+#     for i in range(1, 6):
+#         svm_model_str = f"svm_model_{i}.pickle"
+#         svm_model = pickle.dumps(functions.load_model(1, svm_model_str))
+#         fs.put(svm_model, filename="SCE__" + svm_model_str)
+#         xgb_model_str = f"xgb_model_{i}.pickle"
+#         xgb_model = pickle.dumps(functions.load_model(1, xgb_model_str))
+#         fs.put(xgb_model, filename="SCE__" + xgb_model_str)
+#         svm_model_str = f"svm_model_{i}.pickle"
+#         svm_model = pickle.dumps(functions.load_model(2, svm_model_str))
+#         fs.put(svm_model, filename="Haifa__" + svm_model_str)
+#         xgb_model_str = f"xgb_model_{i}.pickle"
+#         xgb_model = pickle.dumps(functions.load_model(2, xgb_model_str))
+#         fs.put(xgb_model, filename="Haifa__" + xgb_model_str)
+
+#     # db.models_1.insert_one({"svm_model_3": model})
+#     return True
+
+# dataset = functions.find_dataset(1, "SCE_dataset")
+# print(dataset)
+# functions.insert_dataset1()
+# functions.insert_dataset2()
+
+# # Print results.
+# for item in items:
+#     st.write(f"{item['name']} has a :{item['pet']}:")
 
 header = st.container()
 approach = st.container()

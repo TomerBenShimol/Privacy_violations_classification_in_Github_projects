@@ -7,6 +7,26 @@ import tensorflow as tf
 import fasttext
 import tensorflow_hub as hub
 from sklearn.feature_extraction.text import TfidfVectorizer
+import pymongo
+from pymongo.server_api import ServerApi
+
+
+# Initialize connection.
+# Uses st.cache_resource to only run once.
+@st.cache_resource
+def init_connection():
+    return pymongo.MongoClient(
+        "mongodb+srv://tomerbe3:R584tcs8L3NPZlj9@cluster0.taqvwiw.mongodb.net/?retryWrites=true&w=majority",
+        server_api=ServerApi("1"),
+    )
+
+
+client = init_connection()
+
+
+def get_DB():
+    return client
+
 
 metrics = {
     "dataset1": {
@@ -42,7 +62,6 @@ metrics = {
 def clean_text(
     string: str,
     punctuations=r"""!()-[]{};:'"\,<>./?@#$%^&*_~""",
-    stop_words=["the", "a", "and", "is", "be", "will", "steps", "to", "reproduce"],
 ) -> str:
     """
     A method to clean text
@@ -57,8 +76,6 @@ def clean_text(
             string = string.replace(x, "")
     # Converting the text to lower
     string = string.lower()
-    # Removing stop words
-    string = " ".join([word for word in string.split() if word not in stop_words])
     # Cleaning the whitespaces
     string = re.sub(r"\s+", " ", string).strip()
     return string
@@ -93,7 +110,7 @@ def avg_chars(dataset):
         return 0.0
 
 
-def read_dataset1():
+def insert_dataset1():
     dataset = pd.read_csv(
         "datasets/dataset-mixed-classifications.csv", encoding="ISO-8859-1"
     )
@@ -127,10 +144,13 @@ def read_dataset1():
     # Concat & shuffle
     dataset = pd.concat([dataset, dataset_pv_augmentation])
     dataset = dataset.sample(frac=1)
-    return dataset
+    client.PVC.datasets.insert_one(
+        {"SCE_dataset": dataset.to_dict("list"), "dataset_number": 1}
+    )
 
 
-def read_dataset2():
+
+def insert_dataset2():
     dataset = pd.read_csv("datasets/jenny-dataset.csv", encoding="ISO-8859-1")
     # Ignoring unnecessary columns
     dataset.drop("ï»¿Dataset ID", axis=1, inplace=True)
@@ -155,7 +175,13 @@ def read_dataset2():
     dataset.rename(columns={"Title": "Classification"}, inplace=True)
     dataset.drop("Classification_", axis=1, inplace=True)
     dataset = dataset.sample(frac=1)
-    return dataset
+    client.PVC.datasets.insert_one(
+        {"Haifa_dataset": dataset.to_dict("list"), "dataset_number": 2}
+    )
+
+
+def find_dataset(number, key):
+    return pd.DataFrame(client.PVC.datasets.find_one({"dataset_number": number})[key])
 
 
 def load_model(id, name):

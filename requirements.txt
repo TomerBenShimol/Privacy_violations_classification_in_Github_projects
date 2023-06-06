@@ -7,3 +7,4 @@ tensorflow
 tensorflow_hub
 fasttext
 scikit-learn
+pymongo

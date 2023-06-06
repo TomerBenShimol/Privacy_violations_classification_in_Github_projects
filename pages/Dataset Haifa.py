@@ -19,7 +19,7 @@ with header:
 
 with dataset_section:
     # Import data
-    dataset = read_dataset2()
+    dataset = find_dataset(2, "Haifa_dataset")
     st.write(dataset.head())
     st.text(f"{dataset.shape[0]} Annotations.")
     st.text(f"{dataset.Classification.value_counts()[0]} Non-privacy violations.")
