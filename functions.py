@@ -3,11 +3,9 @@ import streamlit as st
 import re
 import pickle
 import numpy as np
-import pandas as pd
 import tensorflow as tf
 import fasttext
 import tensorflow_hub as hub
-import tensorflow_text
 from sklearn.feature_extraction.text import TfidfVectorizer
 
 metrics = {

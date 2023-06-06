@@ -1,0 +1,8 @@
+pandas
+re
+pickle
+numpy
+tensorflow
+fasttext
+tensorflow_hub
+sklearn

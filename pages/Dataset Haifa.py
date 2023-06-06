@@ -13,7 +13,7 @@ with open("style.css") as f:
 
 with header:
     st.markdown(
-        '<h1 class="dataset1-main-header">This dataset was collected by researchers from University of Haifa</h1>',
+        '<h1 class="dataset1-main-header">This dataset was build by researchers from University of Haifa</h1>',
         unsafe_allow_html=True,
     )
 
@@ -43,7 +43,9 @@ with model:
         "Raw text",
     )
     classifiers = ("eXtreme Gradient Booster", "Support vector machine")
-    option = st.selectbox("Which text representation would you like to try?", text_representations)
+    option = st.selectbox(
+        "Which text representation would you like to try?", text_representations
+    )
     index1 = text_representations.index(option)
     if index1 < 5:
         option = st.selectbox("Which classifier would you like to try?", classifiers)
@@ -52,9 +54,9 @@ with model:
         st.text("Classifier => BERT")
 
     if index1 < 5 and index2 == 0:
-        model_name = "xgb" 
+        model_name = "xgb"
     elif index1 < 5 and index2 == 1:
-        model_name = "svm" 
+        model_name = "svm"
     elif index1 == 5:
         model_name = "bert_classifier"
 
@@ -65,16 +67,16 @@ with model:
     st.text("")
     st.text(metrics)
     st.text("* Please enter a description (text) of privacy violation.")
-    text = st.text_input(
-        "", placeholder="Write some text to classify..."
-    )
+    text = st.text_input("", placeholder="Write some text to classify...")
     result = -1
     if len(text) == 1:
-        text_input_container.write("There must be at least one word that is at least two characters long")
+        text_input_container.write(
+            "There must be at least one word that is at least two characters long"
+        )
     if text and len(text) > 1:
         st.write("")
         result = new_prediction(model, index1, 2, text)
         if result == 1:
-            text_input_container.write("Privacy Violation! ⛔️")
+            text_input_container.write("Privacy related! ⛔️")
         if result == 0:
-            text_input_container.write("Not a Privacy Violation 🙏🏻")
+            text_input_container.write("Non privacy related 🙏🏻")

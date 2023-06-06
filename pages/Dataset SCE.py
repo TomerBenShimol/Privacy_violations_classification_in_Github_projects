@@ -80,7 +80,7 @@ with model:
         st.write("")
         result = new_prediction(model, index1, 1, text)
         if result == 1:
-            text_input_container.write("Privacy Violation! ⛔️")
+            text_input_container.write("Privacy related! ⛔️")
         if result == 0:
-            text_input_container.write("Not a Privacy Violation 🙏🏻")
+            text_input_container.write("Non privacy related 🙏🏻")
 
