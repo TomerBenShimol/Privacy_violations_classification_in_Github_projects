@@ -4,5 +4,6 @@ pickle5
 yake
 numpy
 tensorflow
+tensorflow_hub
 fasttext
 scikit-learn
