@@ -16,7 +16,7 @@ from pymongo.server_api import ServerApi
 @st.cache_resource
 def init_connection():
     return pymongo.MongoClient(
-        "mongodb+srv://tomerbe3:R584tcs8L3NPZlj9@cluster0.taqvwiw.mongodb.net/?retryWrites=true&w=majority",
+        "db_uri",
         server_api=ServerApi("1"),
     )
 
