@@ -1,8 +1,9 @@
 pandas
 regex
-pickle
+pickle5
+yake
 numpy
 tensorflow
 fasttext
 tensorflow_hub
-sklearn
+scikit-learn
