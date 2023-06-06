@@ -5,5 +5,4 @@ yake
 numpy
 tensorflow
 fasttext
-tensorflow_hub
 scikit-learn
