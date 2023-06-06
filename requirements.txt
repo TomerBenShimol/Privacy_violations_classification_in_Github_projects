@@ -1,5 +1,5 @@
 pandas
-re
+regex
 pickle
 numpy
 tensorflow
