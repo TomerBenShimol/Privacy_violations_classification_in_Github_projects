@@ -1,5 +1,4 @@
 import pandas as pd
-import streamlit as st
 import re
 import pickle
 import numpy as np
@@ -12,30 +11,30 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 
 metrics = {
     "dataset1": {
-        "xgb_model_1": "Confusion matrix:\n[95 18]\n[30 54]\n\nAccuracy: 75.63%\nPrecision: 75.00%\nRecall: 64.29%\nF1 Score: 69.23%",
-        "svm_model_1": "Confusion matrix:\n[101  12]\n[24   60]\n\nAccuracy: 81.73%\nPrecision: 83.33%\nRecall: 71.43%\nF1 Score: 76.92%",
-        "xgb_model_2": "Confusion matrix:\n[95 18]\n[39 45]\n\nAccuracy: 71.07%\nPrecision: 71.43%\nRecall: 53.57%\nF1 Score: 61.22%",
-        "svm_model_2": "Confusion matrix:\n[92 21]\n[36 48]\n\nAccuracy: 71.07%\nPrecision: 69.57%\nRecall: 57.14%\nF1 Score: 62.75%",
-        "xgb_model_3": "Confusion matrix:\n[93 20]\n[29 55]\n\nAccuracy: 75.13%\nPrecision: 73.33%\nRecall: 65.48%\nF1 Score: 69.18%",
-        "svm_model_3": "Confusion matrix:\n[101  12]\n[21   63]\n\nAccuracy: 83.25%\nPrecision: 84.00%\nRecall: 75.00%\nF1 Score: 79.25%",
-        "xgb_model_4": "Confusion matrix:\n[94 19]\n[24 60]\n\nAccuracy: 78.17%\nPrecision: 75.95%\nRecall: 71.43%\nF1 Score: 73.62%",
-        "svm_model_4": "Confusion matrix:\n[91 22]\n[20 64]\n\nAccuracy: 78.68%\nPrecision: 74.42%\nRecall: 76.19%\nF1 Score: 75.29%",
-        "xgb_model_5": "Confusion matrix:\n[78 35]\n[39 45]\n\nAccuracy: 62.44%\nPrecision: 56.25%\nRecall: 53.57%\nF1 Score: 54.88%",
-        "svm_model_5": "Confusion matrix:\n[101  12]\n[71 13]\n\nAccuracy: 57.87%\nPrecision: 52.00%\nRecall: 15.48%\nF1 Score: 23.85%",
-        "bert_classifier": "Loss: 66.99%\nAccuracy: 58.88%\n\nPrecision: 55.17%\nRecall: 19.05%",
+        "xgb_model_1": "Confusion matrix:\n[97 18]\n[22 60]\n\nAccuracy: 79.70%\nPrecision: 76.92%\nRecall: 73.17%\nF1 Score: 75.00%",
+        "svm_model_1": "Confusion matrix:\n[106  9]\n[15   67]\n\nAccuracy: 87.82%\nPrecision: 88.16%\nRecall: 81.71%\nF1 Score: 84.81%",
+        "xgb_model_2": "Confusion matrix:\n[97 18]\n[27 55]\n\nAccuracy: 77.16%\nPrecision: 75.34%\nRecall: 67.07%\nF1 Score: 70.97%",
+        "svm_model_2": "Confusion matrix:\n[95 20]\n[39 43]\n\nAccuracy: 70.05%\nPrecision: 68.25%\nRecall: 52.44%\nF1 Score: 59.31%",
+        "xgb_model_3": "Confusion matrix:\n[92 23]\n[20 62]\n\nAccuracy: 78.17%\nPrecision: 72.94%\nRecall: 75.61%\nF1 Score: 74.25%",
+        "svm_model_3": "Confusion matrix:\n[103  12]\n[15   67]\n\nAccuracy: 86.29%\nPrecision: 84.81%\nRecall: 81.71%\nF1 Score: 83.23%",
+        "xgb_model_4": "Confusion matrix:\n[98 17]\n[22 60]\n\nAccuracy: 80.20%\nPrecision: 77.92%\nRecall: 73.17%\nF1 Score: 75.47%",
+        "svm_model_4": "Confusion matrix:\n[88 27]\n[20 62]\n\nAccuracy: 76.14%\nPrecision: 69.66%\nRecall: 75.61%\nF1 Score: 72.51%",
+        "xgb_model_5": "Confusion matrix:\n[83 32]\n[28 54]\n\nAccuracy: 69.54%\nPrecision: 62.79%\nRecall: 65.85%\nF1 Score: 64.29%",
+        "svm_model_5": "Confusion matrix:\n[99  16]\n[53 29]\n\nAccuracy: 64.97%\nPrecision: 64.44%\nRecall: 35.37%\nF1 Score: 45.67%",
+        "bert_classifier": "Loss: 63.22%\nAccuracy: 60.41%\n\nPrecision: 53.33%\nRecall: 39.02%",
     },
     "dataset2": {
-        "xgb_model_1": "Confusion matrix:\n[253   0]\n[  1 258]\n\nAccuracy: 99.80%\nPrecision: 100.00%\nRecall: 99.61%\nF1 Score: 99.81%",
-        "svm_model_1": "Confusion matrix:\n[250   3]\n[  2 257]\n\nAccuracy: 99.02%\nPrecision: 98.85%\nRecall: 99.23%\nF1 Score: 99.04%",
-        "xgb_model_2": "Confusion matrix:\n[232   21]\n[  52 207]\n\nAccuracy: 85.74%\nPrecision: 90.79%\nRecall: 79.92%\nF1 Score: 85.01%",
-        "svm_model_2": "Confusion matrix:\n[232  21]\n[ 51 208]\n\nAccuracy: 85.94%\nPrecision: 90.83%\nRecall: 80.31%\nF1 Score: 85.25%",
-        "xgb_model_3": "Confusion matrix:\n[253   0]\n[  1 258]\n\nAccuracy: 99.80%\nPrecision: 100.00%\nRecall: 99.61%\nF1 Score: 99.81%",
-        "svm_model_3": "Confusion matrix:\n[251   2]\n[  4 255]\n\nAccuracy: 98.83%\nPrecision: 99.22%\nRecall: 98.46%\nF1 Score: 98.84%",
-        "xgb_model_4": "Confusion matrix:\n[241  12]\n[  5 254]\n\nAccuracy: 96.68%\nPrecision: 95.49%\nRecall: 98.07%\nF1 Score: 96.76%",
-        "svm_model_4": "Confusion matrix:\n[246   7]\n[  6 253]\n\nAccuracy: 97.46%\nPrecision: 97.31%\nRecall: 97.68%\nF1 Score: 97.50%",
-        "xgb_model_5": "Confusion matrix:\n[228  25]\n[ 17 242]\n\nAccuracy: 91.80%\nPrecision: 90.64%\nRecall: 93.44%\nF1 Score: 92.02%",
-        "svm_model_5": "Confusion matrix:\n[216  37]\n[ 19 240]\n\nAccuracy: 89.06%\nPrecision: 86.64%\nRecall: 92.66%\nF1 Score: 89.55%",
-        "bert_classifier": "Loss: 29.73%\nAccuracy: 88.67%\nPrecision: 87.08%\nRecall: 91.12%",
+        "xgb_model_1": "Confusion matrix:\n[278  66]\n[ 15 408]\n\nAccuracy: 89.44%\nPrecision: 86.08%\nRecall: 96.45%\nF1 Score: 90.97%",
+        "svm_model_1": "Confusion matrix:\n[318  26]\n[  6 417]\n\nAccuracy: 95.83%\nPrecision: 94.13%\nRecall: 98.58%\nF1 Score: 96.30%",
+        "xgb_model_2": "Confusion matrix:\n[324  20]\n[138 285]\n\nAccuracy: 79.40%\nPrecision: 93.44%\nRecall: 67.38%\nF1 Score: 78.30%",
+        "svm_model_2": "Confusion matrix:\n[320  24]\n[132 291]\n\nAccuracy: 79.66%\nPrecision: 92.38%\nRecall: 68.79%\nF1 Score: 78.86%",
+        "xgb_model_3": "Confusion matrix:\n[280  64]\n[ 10 413]\n\nAccuracy: 90.35%\nPrecision: 86.58%\nRecall: 97.64%\nF1 Score: 91.78%",
+        "svm_model_3": "Confusion matrix:\n[325  19]\n[  9 414]\n\nAccuracy: 96.35%\nPrecision: 95.61%\nRecall: 97.87%\nF1 Score: 96.73%",
+        "xgb_model_4": "Confusion matrix:\n[308  36]\n[ 16 407]\n\nAccuracy: 93.22%\nPrecision: 91.87%\nRecall: 96.22%\nF1 Score: 94.00%",
+        "svm_model_4": "Confusion matrix:\n[320  24]\n[ 15 408]\n\nAccuracy: 94.92%\nPrecision: 94.44%\nRecall: 96.45%\nF1 Score: 95.44%",
+        "xgb_model_5": "Confusion matrix:\n[311  33]\n[ 18 405]\n\nAccuracy: 93.35%\nPrecision: 92.47%\nRecall: 95.74%\nF1 Score: 94.08%",
+        "svm_model_5": "Confusion matrix:\n[305  39]\n[ 19 404]\n\nAccuracy: 92.44%\nPrecision: 91.20%\nRecall: 95.51%\nF1 Score: 93.30%",
+        "bert_classifier": "Loss: 30.79%\nAccuracy: 88.14%\nPrecision: 85.78%\nRecall: 94.09%",
     },
 }
 
@@ -43,26 +42,47 @@ metrics = {
 # Cleans a given string by removing URLs, HTML elements, punctuations, stop words, and extra white spaces.
 def clean_text(
     string: str,
-    punctuations=r"""!()-[]{};:'"\,<>./?@#$%^&*_~""",
-    stop_words=["the", "a", "and", "is", "be", "will", "steps", "to", "reproduce"],
+    punctuations_with_whitespace=r"""!()-[]{};:",<>./?@#$%^&*_~""",
+    punctuations_without_whitespace=r"""\'/""",
+    stop_words=[
+        "a",
+        "an",
+        "the",
+        "this",
+        "that",
+        "is",
+        "it",
+        "to",
+        "and",
+        "be",
+        "will",
+    ],
 ) -> str:
     """
     A method to clean text
     """
     # Cleaning the urls
     string = re.sub(r"https?://\S+|www\.\S+", "", string)
+
     # Cleaning the html elements
     string = re.sub(r"<.*?>", "", string)
+
     # Removing the punctuations
     for x in string.lower():
-        if x in punctuations:
+        if x in punctuations_with_whitespace:
+            string = string.replace(x, " ")
+        if x in punctuations_without_whitespace:
             string = string.replace(x, "")
+
     # Converting the text to lower
     string = string.lower()
+
     # Removing stop words
     string = " ".join([word for word in string.split() if word not in stop_words])
+
     # Cleaning the whitespaces
     string = re.sub(r"\s+", " ", string).strip()
+
     return string
 
 
@@ -96,68 +116,14 @@ def avg_chars(dataset):
 
 
 def read_dataset1():
-    dataset = pd.read_csv(
-        "datasets/dataset-mixed-classifications.csv", encoding="ISO-8859-1"
-    )
-    # Ignoring unnecessary columns
-    dataset.drop("ï»¿URL", axis=1, inplace=True)
-    dataset.drop("ID", axis=1, inplace=True)
-    dataset.drop("Classification - Tomer", axis=1, inplace=True)
-    dataset.drop("Classification - Eli", axis=1, inplace=True)
-    dataset.drop("Disagreements - Red", axis=1, inplace=True)
-    dataset.dropna(subset="Classification", inplace=True)
-    ## Concat the Title column to the Body column into a new column - Text
-    dataset["Text_"] = dataset["Title"].astype(str) + " " + dataset["Body"].astype(str)
-    # The only columns we are interested in are: 'Classification' & 'Text'
-    dataset["Title"] = dataset["Text_"]
-    dataset.rename(columns={"Title": "Text"}, inplace=True)
-    dataset.drop("Text_", axis=1, inplace=True)
-    dataset.drop("Body", axis=1, inplace=True)
-    # Text preprocessing
-    for i in range(dataset.Text.shape[0]):
-        dataset.loc[i, "Text"] = clean_text(dataset.loc[i, "Text"])
-    dataset = dataset.dropna(subset="Classification").loc[dataset.Classification != 3]
-    dataset_pv_augmentation = pd.read_csv(
-        "datasets/data_augmentation_privacy_violations.csv", encoding="ISO-8859-1"
-    )
-    dataset_pv_augmentation.drop("Unnamed: 0", axis=1, inplace=True)
-    # Text preprocessing
-    for i in range(dataset_pv_augmentation.Text.shape[0]):
-        dataset_pv_augmentation.loc[i, "Text"] = clean_text(
-            dataset_pv_augmentation.loc[i, "Text"]
-        )
-    # Concat & shuffle
-    dataset = pd.concat([dataset, dataset_pv_augmentation])
-    dataset = dataset.sample(frac=1)
-    return dataset
+    dataset = pd.read_csv("datasets/SCE_dataset.csv", encoding="ISO-8859-1")
+    return dataset.sample(frac=1)
 
 
 def read_dataset2():
-    dataset = pd.read_csv("datasets/jenny-dataset.csv", encoding="ISO-8859-1")
-    # Ignoring unnecessary columns
-    dataset.drop("ï»¿Dataset ID", axis=1, inplace=True)
-    dataset.drop("Issue ID", axis=1, inplace=True)
-    dataset.drop("Source", axis=1, inplace=True)
-    # Concat the Issue Summary column to the Issue Description column into a new column - Text
-    dataset["Text"] = (
-        dataset["Issue Summary"].astype(str)
-        + " "
-        + dataset["Issue Description"].astype(str)
-    )
-    # The only columns we are interested in are: 'Classification' & 'Text'
-    dataset.drop("Issue Summary", axis=1, inplace=True)
-    dataset.drop("Issue Description", axis=1, inplace=True)
-    # Text preprocessing
-    for i in range(dataset.Text.shape[0]):
-        dataset.loc[i, "Text"] = clean_text(dataset.loc[i, "Text"])
-    # Renaming and shuffling
-    dataset.rename(columns={"Label": "Classification_"}, inplace=True)
-    dataset.dropna(subset="Classification_", inplace=True)
-    dataset["Title"] = dataset["Classification_"]
-    dataset.rename(columns={"Title": "Classification"}, inplace=True)
-    dataset.drop("Classification_", axis=1, inplace=True)
-    dataset = dataset.sample(frac=1)
-    return dataset
+    dataset = pd.read_csv("datasets/Haifa_dataset.csv", encoding="ISO-8859-1")
+    dataset.dropna(subset="Text", inplace=True)
+    return dataset.sample(frac=1)
 
 
 def load_model(id, name):
@@ -167,23 +133,23 @@ def load_model(id, name):
         if id == 1:
             if name == "bert_classifier":
                 return (
-                    tf.keras.models.load_model(f"models/tomer_and_eli/{name}"),
+                    tf.keras.models.load_model(f"models/SCE/{name}"),
                     metrics[f"dataset{id}"][name],
                 )
             else:
                 return (
-                    pickle.load(open(f"models/tomer_and_eli/{name}", "rb")),
+                    pickle.load(open(f"models/SCE/{name}", "rb")),
                     metrics[f"dataset{id}"][name.split(".")[0]],
                 )
         if id == 2:
             if name == "bert_classifier":
                 return (
-                    tf.keras.models.load_model(f"models/jenny/{name}"),
+                    tf.keras.models.load_model(f"models/Haifa/{name}"),
                     metrics[f"dataset{id}"][name],
                 )
             else:
                 return (
-                    pickle.load(open(f"models/jenny/{name}", "rb")),
+                    pickle.load(open(f"models/Haifa/{name}", "rb")),
                     metrics[f"dataset{id}"][name.split(".")[0]],
                 )
     except:
@@ -194,17 +160,13 @@ def load_feature_names(id, option=False):
     if id not in [1, 2] or type(option) != bool:
         return None
     if id == 1 and not option:
-        return np.load(
-            f"feature_names/tomer_and_eli/feature_names.npy", allow_pickle=True
-        )
+        return np.load(f"feature_names/SCE/feature_names.npy", allow_pickle=True)
     if id == 2 and not option:
-        return np.load(f"feature_names/jenny/feature_names.npy", allow_pickle=True)
+        return np.load(f"feature_names/Haifa/feature_names.npy", allow_pickle=True)
     if id == 1 and option:
-        return np.load(
-            f"feature_names/tomer_and_eli/feature_names_25.npy", allow_pickle=True
-        )
+        return np.load(f"feature_names/SCE/feature_names_25.npy", allow_pickle=True)
     if id == 2 and option:
-        return np.load(f"feature_names/jenny/feature_names_25.npy", allow_pickle=True)
+        return np.load(f"feature_names/Haifa/feature_names_25.npy", allow_pickle=True)
 
 
 def to_tfidf(text_to_process, feature_names):

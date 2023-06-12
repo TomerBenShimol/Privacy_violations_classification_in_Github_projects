@@ -78,16 +78,32 @@
   border: 1px solid rgba(250, 250, 250, 0.2);
 }
 
-.dataset1-main-header {
+.main-header {
   font-style: italic;
   text-align: center;
   margin: 0;
   margin-bottom: 5px;
 }
 
-.dataset1-secondary-header {
+.secondary-header {
   font-style: italic;
   text-align: center;
   margin: 0;
   margin-bottom: 10px;
+}
+
+.description {
+  text-align: left;
+  font-size: 1.2rem;
+}
+
+.bigger-description {
+  text-align: left;
+  font-size: 1.3rem;
+}
+
+.bigger-bolder-p {
+  text-align: left;
+  font-size: 1.5rem;
+  font-weight: 600;
 }

@@ -8,12 +8,12 @@ import fasttext
 class CleanTextTestCase(unittest.TestCase):
     def test_clean_text_with_url(self):
         string = "Check out this website: https://www.example.com"
-        expected_output = "check out this website"
+        expected_output = "check out website"
         self.assertEqual(clean_text(string), expected_output)
 
     def test_clean_text_with_html_elements(self):
         string = "This is <b>bold</b> and <i>italic</i>"
-        expected_output = "this bold italic"
+        expected_output = "bold italic"
         self.assertEqual(clean_text(string), expected_output)
 
     def test_clean_text_with_punctuations(self):
@@ -22,8 +22,8 @@ class CleanTextTestCase(unittest.TestCase):
         self.assertEqual(clean_text(string), expected_output)
 
     def test_clean_text_with_stop_words(self):
-        string = "This is the example to reproduce"
-        expected_output = "this example"
+        string = "this is an example a the that it to and be will"
+        expected_output = "example"
         self.assertEqual(clean_text(string), expected_output)
 
     def test_clean_text_with_extra_white_spaces(self):
@@ -33,7 +33,7 @@ class CleanTextTestCase(unittest.TestCase):
 
     def test_clean_text_with_combination(self):
         string = "Check out this website: https://www.example.com. It has <b>bold</b> text and some punctuations!"
-        expected_output = "check out this website it has bold text some punctuations"
+        expected_output = "check out website has bold text some punctuations"
         self.assertEqual(clean_text(string), expected_output)
 
     def test_clean_text_with_empty_string(self):
@@ -300,10 +300,6 @@ class PreprocessForFtTestCase(unittest.TestCase):
 
 class NewPredictionTestCase(unittest.TestCase):
     def setUp(self):
-        # Set up a sample dataset
-        self.dataset = 1
-        # Set up a sample model
-        self.model = load_model(1, "xgb_model_1.pickle")
         # Set up a sample text to predict
         self.text_to_predict = "Sample text"
 
@@ -312,35 +308,51 @@ class NewPredictionTestCase(unittest.TestCase):
         pass
 
     def test_new_prediction_with_option_1_dataset_1(self):
-        result = new_prediction(self.model, 1, self.dataset, self.text_to_predict)
+        result = new_prediction(
+            load_model(1, "xgb_model_2.pickle")[0], 1, 1, self.text_to_predict
+        )
         self.assertIsNotNone(result)
 
     def test_new_prediction_with_option_1_dataset_2(self):
-        result = new_prediction(self.model, 1, self.dataset, self.text_to_predict)
+        result = new_prediction(
+            load_model(2, "xgb_model_2.pickle")[0], 1, 2, self.text_to_predict
+        )
         self.assertIsNotNone(result)
 
     def test_new_prediction_with_option_2_dataset_1(self):
-        result = new_prediction(self.model, 2, self.dataset, self.text_to_predict)
+        result = new_prediction(
+            load_model(1, "xgb_model_1.pickle")[0], 2, 1, self.text_to_predict
+        )
         self.assertIsNotNone(result)
 
     def test_new_prediction_with_option_2_dataset_2(self):
-        result = new_prediction(self.model, 2, self.dataset, self.text_to_predict)
+        result = new_prediction(
+            load_model(2, "xgb_model_3.pickle")[0], 2, 2, self.text_to_predict
+        )
         self.assertIsNotNone(result)
 
     def test_new_prediction_with_option_3(self):
-        result = new_prediction(self.model, 3, self.dataset, self.text_to_predict)
+        result = new_prediction(
+            load_model(1, "xgb_model_4.pickle")[0], 3, 1, self.text_to_predict
+        )
         self.assertIsNotNone(result)
 
     def test_new_prediction_with_option_4(self):
-        result = new_prediction(self.model, 4, self.dataset, self.text_to_predict)
+        result = new_prediction(
+            load_model(1, "xgb_model_5.pickle")[0], 4, 1, self.text_to_predict
+        )
         self.assertIsNotNone(result)
 
     def test_new_prediction_with_option_5(self):
-        result = new_prediction(self.model, 5, self.dataset, self.text_to_predict)
+        result = new_prediction(
+            load_model(1, "bert_classifier")[0], 5, 1, self.text_to_predict
+        )
         self.assertIsNotNone(result)
 
     def test_new_prediction_with_invalid_option(self):
-        result = new_prediction(self.model, 6, self.dataset, self.text_to_predict)
+        result = new_prediction(
+            load_model(1, "xgb_model_3.pickle")[0], 6, 1, self.text_to_predict
+        )
         self.assertIsNone(result)
 
 
