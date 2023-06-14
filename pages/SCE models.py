@@ -71,7 +71,7 @@ with model:
     st.text(metrics)
     st.text("* Please enter a description (text) of privacy related issue")
     text = st.text_input(
-        "", placeholder="Write some text to classify...", label_visibility="collapsed"
+        "", placeholder="Write some text to classify...", key="text_input_1"
     )
     result = -1
     if len(text) == 1:
@@ -85,6 +85,7 @@ with model:
             text_input_container.write("Privacy related! ⛔️")
         if result == 0:
             text_input_container.write("Non privacy related 🙏🏻")
+        st.session_state.input_text_1 = ""
 
 with filler:
     st.text("")

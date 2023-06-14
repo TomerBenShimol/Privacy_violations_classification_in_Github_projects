@@ -32,7 +32,7 @@ with goal:
 with datasets:
     st.header("Datasets")
     st.text(
-        "We worked on two different data sets. One came to us without classification and we\nperformed it ourselves (SCE dataset) and the other was built by researchers\nfrom the University of Haifa and came to us already with classification\n(Haifa dataset)."
+        "We worked with two distinct sets of data. The first one was initially unclassified,\nand we took the responsibility of classifying it ourselves (referred to as the SCE\ndataset). The second dataset was created by researchers from the University of\nHaifa and was already classified when it was provided to us (known as the Haifa\ndataset)."
     )
 
 with models:

@@ -67,12 +67,11 @@ with model:
     if model_name == "xgb" or model_name == "svm":
         model_name = f"{model_name}_model_{index1 + 1}.pickle"
 
-    print("*******************" + model_name)
     model, metrics = load_model(2, model_name)
     st.text(metrics)
     st.text("* Please enter a description (text) of privacy related issue")
     text = st.text_input(
-        "", placeholder="Write some text to classify...", label_visibility="collapsed"
+        "", placeholder="Write some text to classify...", key="text_input_2"
     )
     result = -1
     if len(text) == 1:
@@ -86,6 +85,7 @@ with model:
             text_input_container.write("Privacy related! ⛔️")
         if result == 0:
             text_input_container.write("Non privacy related 🙏🏻")
+        st.session_state.input_text_2 = ""
 
 with filler:
     st.text("")
